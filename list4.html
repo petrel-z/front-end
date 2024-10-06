@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>计划清单</title>
+    <style>
+        @font-face {
+            font-family: 'icomoon';
+            src: url('fonts/icomoon.eot?4dzs84');
+            src: url('fonts/icomoon.eot?4dzs84#iefix') format('embedded-opentype'),
+                url('fonts/icomoon.ttf?4dzs84') format('truetype'),
+                url('fonts/icomoon.woff?4dzs84') format('woff'),
+                url('fonts/icomoon.svg?4dzs84#icomoon') format('svg');
+            font-weight: normal;
+            font-style: normal;
+            font-display: block;
+        }
+
+        div,
+        h1 {
+            border-radius: 5px;
+        }
+
+        button {
+            border-radius: 10px;
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        body {
+            background-color: #ccc;
+        }
+
+        li {
+            list-style: none;
+        }
+
+        /* 模块转换开始 */
+        .b {
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.37);
+            height: 1000px;
+        }
+
+        .buttons {
+            width: 1000px;
+            margin: 30px auto;
+            text-align: center;
+        }
+
+        .buttons button {
+            width: 100px;
+            height: 50px;
+            font-size: 20px;
+            margin: 0 30px;
+            background-color: white;
+        }
+
+        .buttons button:nth-child(1) {
+            background-color: pink;
+
+        }
+
+        .buttons button:hover {
+            background-color: pink !important;
+        }
+
+        .paneBox {
+            margin: auto auto;
+            width: 1000px;
+            height: 600px;
+            position: relative;
+        }
+
+        .paneBox div[class^="box"] {
+            overflow: 0;
+            z-index: 0;
+            position: absolute;
+            width: 1000px;
+            height: 600px;
+        }
+
+        .paneBox div[class^="box1"] {
+            z-index: 1;
+        }
+
+        /* 模块转换结束 */
+
+        /* 计划清单开始 */
+
+
+        /* 整个每日清单盒子 */
+        .listBox {
+            display: flex;
+            flex-direction: column;
+            justify-content: start;
+            flex-shrink: calc(2);
+            /* margin: 0 auto; */
+            width: 1000px;
+            height: 600px;
+            background-color: #FFF;
+            text-align: center;
+            transition: all 0.6s;
+            border-radius: 3px;
+        }
+
+        @media (max-width: 300px) {
+            .listBox {
+                width: 100%;
+                height: 100%;
+            }
+        }
+
+        .listBox h1 {
+            font-size: 20px;
+            margin: 20px 0;
+            text-align: start;
+            font-weight: 400;
+            border-bottom: 1px solid black;
+        }
+
+        /* 表单域盒子 */
+        .form {
+            width: 100%;
+            height: 50px;
+            background-color: white;
+        }
+
+        .form form {
+            position: relative;
+            border-radius: 25px;
+            width: 600px;
+            height: 100%;
+            background-color: rgba(199, 196, 196, 0.268);
+        }
+
+        /* 表单域 提交按钮*/
+        .form form .sub {
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+        }
+
+        .form form .sub:hover {
+            background-color: white;
+        }
+
+        .form input {
+            width: 400px;
+            height: 45px;
+            outline: none;
+        }
+
+        form .list {
+            padding-left: 20px;
+            background-color: transparent;
+            /* border-color: transparent; */
+            border: none;
+        }
+
+        form .fontNum {
+
+            position: absolute;
+            left: 400px;
+            top: 25px;
+            /* content: "111"; */
+            width: 50px;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+            background-color: transparent;
+            font-size: 12px;
+        }
+
+        ul li {
+            border-radius: 20px;
+            list-style: none;
+            background-color: rgba(244, 178, 189, 0.562);
+            transition: all 0.5s;
+        }
+
+        ul {
+            position: relative;
+        }
+
+        .none {
+            overflow: hidden;
+            /* *** */
+            opacity: 1;
+            z-index: 1;
+            position: absolute;
+            right: -300px;
+            top: -218px;
+            width: 0;
+            height: 600px;
+            background-color: rgb(226, 226, 226);
+            transition: all 0.3s;
+        }
+
+
+        .input {
+            margin-top: 30px;
+            text-align: start;
+            outline: none;
+            border: none;
+        }
+
+        input:focus {
+            border-color: transparent;
+            /* 或者设置为与背景相同的颜色 */
+            outline: none;
+            /* 移除聚焦时的轮廓线 */
+            box-shadow: none;
+            /* 移除某些浏览器默认的聚焦阴影 */
+            caret-color: white;
+            /*控制光标颜色，来达到隐藏光标的目的*/
+        }
+
+        .time {
+            display: none;
+            width: 200px;
+            position: absolute;
+            top: 130px;
+            right: 0;
+            background-color: rgba(244, 178, 189, 0.562);
+        }
+
+        .hour,
+        .min {
+            float: left;
+        }
+
+        .none select {
+            position: relative;
+            outline: none;
+            background-color: rgba(244, 178, 189, 0.562);
+            width: 100px;
+            text-align: center;
+        }
+
+        .none select option:hover {
+            background-color: white;
+        }
+
+        .none>h3 {
+            padding: 10px 0;
+            background-color: rgba(244, 178, 189, 0.562);
+            margin: 26px 0 20px 0;
+            text-align: start;
+
+        }
+
+        .none>button {
+
+            background-color: white;
+            float: right;
+            margin-right: 0;
+            margin-left: 100px;
+            border: 1px solid black;
+            width: 26px;
+            height: 26px;
+            text-align: center;
+            line-height: 26px;
+            content: ">";
+        }
+
+        .none>button:hover {
+            background-color: rgba(244, 178, 189, 0.562);
+        }
+
+        .none>h3::after:hover {
+            background-color: white;
+            border: 1px solid white;
+        }
+
+        .none .deleteSetTime {
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            line-height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            right: 105px;
+            top: 105px;
+            margin-left: 0;
+        }
+
+        /* 重要程度 */
+        .impt {
+            margin-top: 150px;
+        }
+
+        .impt button {
+            margin: 10px 0;
+            padding: 5px 0;
+            background-color: white;
+        }
+
+        .impt button:hover {
+            background-color: rgba(244, 178, 189, 0.562);
+        }
+
+        .imptButtons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 10px;
+        }
+
+        .clock {
+            position: absolute;
+            right: 0;
+            margin-right: 20px;
+        }
+
+        .delete {
+            display: none;
+            position: fixed;
+            background-color: white;
+        }
+
+
+        .textLine {
+            text-decoration: line-through;
+        }
+
+        /* 要渲染的已完成和未完成事项的区域 */
+        .thingBox {
+            margin-top: 30px;
+            background-color: white;
+        }
+
+        .thingBox ul li {
+            margin: 10px;
+            height: 40px;
+            display: flex;
+            justify-content: start;
+            align-items: center;
+        }
+
+        .thingBox ul li>input {
+            margin-left: 30px;
+
+        }
+
+        .thingBox ul li .thingName {
+            width: 300px;
+            margin-left: 50px;
+            font-size: 15px;
+            text-align: start;
+        }
+
+        .thingBox ul li .showTime,
+        .thingBox ul li .showImpt {
+            margin-left: 30px;
+            font-size: 15px;
+        }
+
+        /* 计划清单结束 */
+        /* 四象限开始 */
+        .fourbox {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 1000px;
+            height: 600px;
+            background-color: white;
+
+        }
+
+        .fourbox div[class^="f"] {
+            height: 297px;
+            border-radius: 300px;
+            border: 1px solid black;
+        }
+
+        .fourbox h3 {
+            text-align: center;
+            padding-top: 10px;
+
+        }
+
+        .fourbox ul {
+            margin: 30px;
+        }
+
+        .fourbox ul li {
+            margin: 10px 30px;
+            padding: 10px 10px;
+        }
+
+        /* 四象限结束 */
+        /* 番茄钟开始 */
+        .box3 {
+            position: relative;
+            background-color: white;
+        }
+
+        .tomato {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .tomato>div {
+            margin: auto auto;
+            width: 200px;
+            text-align: center;
+        }
+
+        .tomato>div button {
+            margin: 10px auto;
+        }
+
+        .border {
+            position: relative;
+            height: 200px;
+            border-radius: 100px;
+            border: 2px solid black;
+            text-align: center;
+            line-height: 200px;
+            color: black;
+            font-size: 20px;
+            font-style: italic;
+        }
+
+        .toHM {
+            position: absolute;
+            width: 100%;
+        }
+
+        .toHM,
+        .to_hour,
+        .to_hour {
+            font-size: 40px;
+        }
+
+        .hiddenHour {
+            margin: auto auto;
+            transform: translateY(120px);
+            line-height: 100%;
+
+        }
+
+        .start,
+        .end {
+            width: 70px;
+            height: 30px;
+            background-color: white;
+        }
+
+        .stop,
+        .continue {
+            width: 30px;
+            height: 30px;
+            background-color: white;
+        }
+
+        .start:hover,
+        .end:hover,
+        .stop:hover,
+        .continue:hover {
+            background-color: rgba(244, 178, 189, 0.562);
+        }
+
+        .end {
+            display: none;
+        }
+
+        .start {
+            display: block;
+        }
+
+        .stop {
+
+            display: block;
+        }
+
+        .stop::after {
+            font-family: 'icomoon';
+            content: '';
+        }
+
+        .continue {
+            display: none;
+        }
+
+        .continue::after {
+            font-family: 'icomoon';
+            content: '';
+        }
+
+
+        .attentionText {
+            margin: 100px auto;
+            font-size: 30px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* 番茄钟结束 */
+    </style>
+</head>
+
+<body>
+
+
+
+    <div class="b">
+        <div class="buttons">
+            <button>每日清单</button>
+            <button>四象限</button>
+            <button>番茄钟</button>
+        </div>
+        <div class="paneBox">
+            <div class="box1">
+                <!-- 结构 -->
+                <div class="listBox">
+                    <h1>今日计划清单</h1>
+                    <!-- 输入框 -->
+                    <div class="form">
+                        <form action="" class="info">
+                            <button class="sub">+</button>
+                            <input type="text" name="list" class="list" placeholder="添加计划">
+                            <div class="fontNum"><span>0</span>/15</div>
+                            <select name=" improtant" id="" class="improtant">
+                                <option value="重要不紧急">重要不紧急</option>
+                                <option value="不重要不紧急">不重要不紧急</option>
+                                <option value="重要紧急">重要紧急</option>
+                                <option value="不重要紧急">不重要紧急</option>
+                            </select>
+
+                        </form>
+                    </div>
+                    <div class="thingBox">
+                        <h1>未完成</h1>
+                        <div class="done">
+                            <ul>
+                                <!-- 未完成渲染区域 -->
+                            </ul>
+                        </div>
+
+                        <h1>已完成</h1>
+                        <div class="hasDone">
+                            <ul>
+                                <!-- 已完成渲染区域 -->
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="box2">
+                <div class="fourbox">
+                    <div class="f1">
+                        <h3>重要不紧急</h3>
+                        <ul>
+                            <!-- 渲染 -->
+                        </ul>
+                    </div>
+
+                    <div class="f2">
+                        <h3>重要且紧急</h3>
+                        <ul>
+                            <!-- 渲染 -->
+                        </ul>
+                    </div>
+
+                    <div class="f3">
+                        <h3>紧急不重要</h3>
+                        <ul>
+                            <!-- 渲染 -->
+                        </ul>
+                    </div>
+
+                    <div class="f4">
+                        <h3>不紧急不重要</h3>
+                        <ul>
+                            <!-- 渲染 -->
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="box3">
+                <div class="attentionText">
+                </div>
+                <div class="tomato">
+                    <div class="border">
+                        <div class="toHM">
+                            <i class="to_hour">1</i>:<i class="to_min">00</i>
+                        </div>
+                        <div class="hiddenHour">
+                            <select name="hiddenHour" class="selectHour" id="">
+                                <option value="0">提醒时间</option>
+                                <option value="1">1min</option>
+                                <option value="2">2min</option>
+                                <option value="5">5min</option>
+                                <option value="10">10min</option>
+                                <option value="15">15min</option>
+                                <option value="20">20min</option>
+                                <option value="25">25min</option>
+                                <option value="30">30min</option>
+                                <option value="35">35min</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="se">
+                        <button class="start">开始计时</button>
+                        <button class="end">结束计时</button>
+                    </div>
+                    <div class="sc">
+                        <button class="stop"></button>
+                        <button class="continue"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        //渲染
+        //创建数组，将所有页面的可变化的元素存入数组中
+        let arr = JSON.parse(localStorage.getItem('arr')) || []
+        // console.log(arr)
+        let arr1 = []
+        let arr2 = []
+
+        //添加事项，提交表单，将数据传入数组
+        const form = document.querySelector('.info')
+        const ul = document.querySelector('.done ul')//获取ul
+        const ulHasDone = document.querySelector('.hasDone ul')//获取ul
+        const list = document.querySelector('.list')
+        form.addEventListener('submit', function (e) {
+            e.preventDefault()
+            if (!list.value) {
+                alert('事项名称不能为空！！！')
+                return
+            }
+
+            const thingName = form.querySelector('.list')
+            const impt = form.querySelector('.improtant')
+
+            arr.unshift({
+                id: arr.length,
+                isChecked: false, // 用来记录复选框的状态
+                thingName: thingName.value,
+                impt: impt.value,
+                time: '提醒时间'
+            })
+            ul.innerHTML = ''
+            this.reset()
+            //把数组添加到本地存储里面
+            localStorage.setItem('arr', JSON.stringify(arr))
+            //将字数统计清零
+            fontNumSpan.textContent = 0
+            //渲染页面 和重置表单
+            render()
+        })
+
+        //限制事项名称的字数
+        const fontNumSpan = document.querySelector('.fontNum span')
+        const inputList = document.querySelector('.list')
+        inputList.addEventListener('input', function () {
+            const len = this.value.length
+            fontNumSpan.textContent = len
+            if (len >= 15) {
+                //方法1:将超出部分截断，out了，会覆盖后面的内容
+                // this.value=inputList.value.slice(0,15)
+                //方法2:设置输入框的 maxlength 属性。maxlength 属性用于指定输入框中允许输入的最大字符数。
+                //当输入框的 maxlength 属性被设置后，用户在输入时将无法输入超过该属性值的字符数。
+                inputList.setAttribute('maxlength', 15)
+            } else {
+                inputList.removeAttribute('15')
+            }
+            //还要添加当添加事项后将统计的字数清零
+        })
+
+        //第一次渲染页面
+        render()
+
+        function render() {
+            //每次渲染的时候，box1的宽度变成1000px
+            const listBox = document.querySelector('.listBox')
+            listBox.style.width = '1000px'
+            arr = JSON.parse(localStorage.getItem('arr'))
+            function myReturn(item, thingName, time, impt, isChecked, index) {
+                return `
+                <li class="li${index}">
+                                    <button class="delete">删除</button>
+                                    <input type="checkbox" ${isChecked ? 'checked' : ''}>
+                                    <div class="thingName">${thingName}</div>
+                                    <span class="showTime" id="showtime${index}">${time}</span>
+                                    <span class="showImpt">${impt}</span>
+                                    <span class="clock">⏰</span>
+
+                                    <div class="none" id="none${index}">
+                                        <button class="close">></button>
+                                        <!-- 事项名称 -->
+                                        <h3>${thingName}</h3>
+                                        <!-- 设置提醒: -->
+                                        <div class="input" data-time="time${index}">
+                                            ⏰ 设置提醒 :
+                                            <span class="hours">${time && time !== '提醒时间' ? time.substr(0, 2) : ''}</span>:
+                                            <span class="mins">${time && time !== '提醒时间' ? time.substr(3, 2) : ''}</span>
+                                        </div>
+                                        <button class="deleteSetTime">x</button>
+                                        <div class="time" id="time${index}">
+                                            <select name="" id="" class="hour" size="8">
+                                                <option value="00">00</option>
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                            </select>
+                                            <select name="" id="" class="min" size="8">
+                                                <option value="00">00</option>
+                                                <option value="01">01</option>
+                                                <option value="02">02</option>
+                                                <option value="03">03</option>
+                                                <option value="04">04</option>
+                                                <option value="05">05</option>
+                                                <option value="06">06</option>
+                                                <option value="07">07</option>
+                                                <option value="08">08</option>
+                                                <option value="09">09</option>
+                                                <option value="10">10</option>
+                                                <option value="11">11</option>
+                                                <option value="12">12</option>
+                                                <option value="13">13</option>
+                                                <option value="14">14</option>
+                                                <option value="15">15</option>
+                                                <option value="16">16</option>
+                                                <option value="17">17</option>
+                                                <option value="18">18</option>
+                                                <option value="19">19</option>
+                                                <option value="20">20</option>
+                                                <option value="21">21</option>
+                                                <option value="22">22</option>
+                                                <option value="23">23</option>
+                                                <option value="24">24</option>
+                                                <option value="25">25</option>
+                                                <option value="26">26</option>
+                                                <option value="27">27</option>
+                                                <option value="28">28</option>
+                                                <option value="29">29</option>
+                                                <option value="30">30</option>
+                                                <option value="31">31</option>
+                                                <option value="32">32</option>
+                                                <option value="33">33</option>
+                                                <option value="34">34</option>
+                                                <option value="35">35</option>
+                                                <option value="36">36</option>
+                                                <option value="37">37</option>
+                                                <option value="38">38</option>
+                                                <option value="39">39</option>
+                                                <option value="40">40</option>
+                                                <option value="41">41</option>
+                                                <option value="42">42</option>
+                                                <option value="43">43</option>
+                                                <option value="44">44</option>
+                                                <option value="45">45</option>
+                                                <option value="46">46</option>
+                                                <option value="47">47</option>
+                                                <option value="48">48</option>
+                                                <option value="49">49</option>
+                                                <option value="50">50</option>
+                                                <option value="51">51</option>
+                                                <option value="52">52</option>
+                                                <option value="53">53</option>
+                                                <option value="54">54</option>
+                                                <option value="55">55</option>
+                                                <option value="56">56</option>
+                                                <option value="57">57</option>
+                                                <option value="58">58</option>
+                                                <option value="59">59</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="impt" id="time${index}">
+                                            重要程度：<br>
+                                            <div class="imptButtons">
+                                                <button>重要不紧急</button>
+                                                <button>不重要不紧急</button>
+                                                <button>重要紧急</button>
+                                                <button>不重要紧急</button>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </li>
+                `
+            }
+            //渲染未完成事项
+            const arr1 = arr.map((item, index) => {
+                if (item.isChecked === false) {
+                    const getReturn = myReturn(item, item.thingName, item.time, item.impt, item.isChecked, index)
+                    return getReturn
+                }
+                return ''
+            })
+            const arr2 = arr.map((item, index) => {
+                if (item.isChecked === true) {
+                    const getReturn = myReturn(item, item.thingName, item.time, item.impt, item.isChecked, index)
+                    return getReturn
+                }
+                return ''
+            })
+            //渲染新的li
+            ul.innerHTML = arr1.join('')//未完成
+            ulHasDone.innerHTML = arr2.join('')//已完成
+
+            // 给已完成事项添加下划线,未完成的没有下划线
+            const thingNames = document.querySelectorAll('.thingName')
+            arr.forEach((item, index) => {
+                if (item.isChecked === true) {
+                    const thingName = thingNames[index]
+                    thingName.classList.add('textLine')
+                    console.log(thingName.innerHTML)
+                }
+            })
+
+            //删除事项
+            // 为新添加的 li 元素添加右键点击事件
+            const lis = document.querySelectorAll('li');
+            lis.forEach((li, index) => {
+                let eventAdded = false
+                li.addEventListener('contextmenu', e)//添加右键点击事件
+                function e(e) {
+                    console.log('右键点击了')
+                    e.preventDefault()//阻 li.querySelector('.delete')
+                    const deleteButton = li.querySelector('.delete')
+                    deleteButton.style.display = 'block'
+                    deleteButton.style.left = e.clientX + 'px'
+                    deleteButton.style.top = e.clientY + 'px'
+                    function removeLi(e) {
+                        e.preventDefault()
+                        // 删除当前的li
+                        console.log('index' + index)
+                        console.log(arr)
+                        arr.splice(index, 1)
+                        console.log('删除' + index)
+                        localStorage.setItem('arr', JSON.stringify(arr))
+                        render()
+                        deleteButton.style.display = 'none'
+                    }
+                    function removeli2() {
+                        deleteButton.style.display = 'none'
+                    }
+                    //只添加一次点击事件就好，不能多次添加
+                    if (eventAdded) {
+                        deleteButton.removeEventListener('click', removeLi)
+                        li.removeEventListener('click', removeli2)
+                    } else {
+                        deleteButton.addEventListener('click', removeLi)
+                        li.addEventListener('click', removeli2)
+                        eventAdded = true
+                    }
+                }
+
+            })
+
+            //设置提醒时间
+            getSetTime()
+            //渲染四象限
+            four()
+        }
+
+        // 点击按钮切换不同的box：每日清单、四象限、番茄钟
+        const buttons = document.querySelectorAll('.buttons button');
+        buttons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                buttons.forEach(item => {
+                    item.style.backgroundColor = 'white'
+                })
+                button.style.backgroundColor = 'pink'
+                //获取对应的box
+                const box = document.querySelector(`div[class^="box${index + 1}"]`);
+                const boxes = document.querySelectorAll('div[class^="box"]');
+                //隐藏其他的box
+                boxes.forEach(box => {
+                    box.style.opacity = 0;
+                    box.style.zIndex = 0;
+                })
+                //显示当前的box
+                box.style.opacity = 1;
+                box.style.zIndex = 1;
+            })
+        })
+
+
+        //事件委托
+        //点击对应的li ，出现对应侧边框
+        ul.addEventListener('click', function (e) {
+            //我们需要确保当点击 li 元素或者 li 元素内的子元素时，都能获取到最外层的 li 元素。
+            //利用了事件冒泡的特性，通过循环向上遍历查找，最终获得点击事件应该作用的目标元素，即 li 元素
+            let target = e.target//获取点击的目标元素，可能是li元素或者li元素内的子元素
+            while (target && target.tagName != 'LI' && e.target.tagName != 'INPUT' && !e.target.closest('.delete')) {
+                target = target.parentNode//向上查找
+            }
+            if (target && target.tagName == 'LI') {
+                //将左边的listBox的宽度减少
+                const listBox = document.querySelector('.listBox')
+                listBox.style.width = '700px'
+                //弹出对应的侧边框
+                const none = target.querySelector('.none')//获取none隐藏的侧边框
+                const nones = ul.querySelectorAll('.none')
+                //让对应li侧边框盒子显示,其他盒子隐藏
+                if (none) {
+                    none.style.zIndex = 1
+                    none.style.width = '300px'
+                    nones.forEach(item => {
+                        if (none != item) {
+                            item.style.zIndex = 0
+                            item.style.width = '300px'
+                        }
+                    })
+                    //点击文本框，显示时间选择
+                }
+                //点击右上角的关闭按钮，隐藏侧边框
+                //一个button对应一个none类的盒子，所以需要找到对应的none盒子
+                // console.log(e.target)
+                if (e.target.tagName == 'BUTTON' && e.target.closest('.close')) {
+                    console.log(e.target.parentNode)
+                    listBox.style.width = '1000px'
+                    nones.forEach(item => {
+                        // if (none != item) {
+                        item.style.zIndex = 0
+                        item.style.width = '0'
+                    })
+                }
+                //获取重要程度的按钮
+                const imptButtons = document.querySelectorAll('.imptButtons button')
+                //改变重要程度的按钮的样式
+                const showImpt = target.querySelector('.showImpt')
+                if (e.target.tagName == 'BUTTON' && e.target.closest('.imptButtons button')) {
+                    // console.log(e.target.parentNode.parentNode.id)//获取当前li的id
+                    const id = e.target.parentNode.parentNode.id.slice(4)//获取当前li的id
+                    console.log(id)
+
+                    const impt = e.target
+                    imptButtons.forEach(button => {
+                        button.style.backgroundColor = 'white'
+                    })
+                    impt.style.backgroundColor = 'pink'
+                    showImpt.innerHTML = impt.innerHTML
+                    //改变数组里的impt值
+                    arr[id].impt = impt.innerHTML
+                    localStorage.setItem('arr', JSON.stringify(arr))
+                    //更新四象限
+                    four()
+                }
+            }
+            //点击完成的时候，需要找到arr数组中的对应元素，将isChecked属性改变
+            //还需要将该事项先从arr数组中删除，然后追加到arr数组的末尾
+            if (e.target.tagName == 'INPUT') {
+                //点击完成，将对应的事项从arr数组中删除，然后追加到arr数组的末尾
+                const id = e.target.parentNode.className.slice(2)
+                const checkbox = document.querySelector(`input[type="checkbox"]`)
+                checkbox.checked = e.target.checked
+                const temp = arr[id]
+                arr[id].isChecked = e.target.checked
+                arr.splice(id, 1)
+                arr.push(temp)//添加到末尾
+                localStorage.setItem('arr', JSON.stringify(arr))
+                render()
+            }
+        })
+        ulHasDone.addEventListener('click', function (e) {
+            if (e.target.tagName === 'INPUT') {
+                //取消完成，将对应的事项从arr数组中删除，然后追加到arr数组的开头
+                if (!e.target.checked) {
+                    const id = e.target.parentNode.className.slice(2)
+                    const temp = arr[id]
+                    arr[id].isChecked = e.target.checked
+                    arr.splice(id, 1)
+                    arr.unshift(temp)//添加到开头
+                    localStorage.setItem('arr', JSON.stringify(arr))
+                    render()
+                }
+            }
+        })
+
+
+        //渲染事项名称天在none侧边框中显示
+        const thingName = document.querySelectorAll('.thingName')
+        const h3 = document.querySelectorAll('.none h3')
+        thingName.forEach((thingName, index1) => {
+            h3.forEach((h3, index2) => {
+                if (index1 === index2)
+                    h3.innerHTML = thingName.innerHTML
+            })//遍历h3
+        })
+
+        function getSetTime() {
+            //点击设置提醒，能够将时间选择框显示出来
+            //每次渲染的时候都要初始化一下，不然只能刷新一下页面才能使得功能生效
+            const inputs = document.querySelectorAll('.input')
+            const times = document.querySelectorAll('.time')
+            inputs.forEach(item => {
+                item.addEventListener('click', function (e) {
+                    e.preventDefault()
+                    const timeID = item.dataset.time
+                    const time = document.getElementById(timeID)
+                    //隐藏其他时间选择框
+                    times.forEach(time => {
+                        time.style.display = 'none'//不能用opacity=0，因为还可以被点击，只是看不见
+                    })
+                    //显示对应的时间选择框
+                    time.style.display = 'block'
+                })
+            })
+
+            //点击none侧边框的其他地方，将时间选择框隐藏
+            window.addEventListener('click', function (e) {
+                if (!e.target.closest('.input') && !e.target.closest('.time') || e.target.closest('.min')) {
+                    times.forEach(time => {
+                        time.style.display = 'none'
+                    })
+                }
+            });
+
+            //选择时间后，看时间是否设置成功，如果设置成功，就将设置的时间显示在none侧边框中，以及显示在li的showTime中
+            const showTime = document.querySelectorAll('.showTime')
+            //给相应的时间选择框添加点击事件，用于获取时间
+            times.forEach(time => {
+
+                const input = document.querySelector(`.input[data-time=${time.id}]`)
+                const hourSpan = input.querySelector('.hours')
+                const minSpan = input.querySelector('.mins')
+                const hour = time.querySelector('.hour');
+                const min = time.querySelector('.min');
+                //点击时间选择框时，将时间显示到showTime中
+                const showTimeID = `show${time.id}`
+                const id = showTimeID.slice(8)//获取要修改的数组的索引
+                const showTime = document.getElementById(showTimeID)
+                const h3 = document.querySelector('.none h3')
+
+                //点击hour和min选择框时，将input的值添加到hour和min中
+                hour.addEventListener('change', function () {
+                    if (this.value == '') {
+                        console.log('时间不能为空')
+                    }
+                    hourSpan.innerHTML = this.value
+                });
+                min.addEventListener('change', function () {
+                    minSpan.innerHTML = this.value
+                    showTime.innerHTML = `${hourSpan.innerHTML}:${minSpan.innerHTML}`
+                    //改变数组的time值
+                    arr[id].time = showTime.innerHTML
+                    localStorage.setItem('arr', JSON.stringify(arr))
+                    setTime()
+                    setTime1()
+                })
+                let now
+                let alterTime0
+                let timer1
+                let timer2
+                function setTime() {
+                    //每次改变showTime的值的时候就会执行以下代码
+                    //将showTime字符串格式转换为日期格式
+                    //获取当前日期的年月日
+                    now = new Date();
+                    const year = now.getFullYear();
+                    const month = now.getMonth() + 1;
+                    const date = now.getDate();
+                    const showTime0 = year + '-' + (month < 10 ? '0' + month : month) + '-' + (date < 10 ? '0' + date : date) + ' ' + showTime.innerHTML + ':00'
+                    alterTime0 = new Date(showTime0.replace(/-/g, '/'))
+                }
+                function setTime1() {
+                    if (alterTime0.getTime() >= now.getTime()) {//如果设置的时间大于当前时间，则开始计时
+                        alert(`${h3.innerHTML} 设置提醒时间成功！`)
+                        timer1 = setInterval(() => {
+                            const nowTime = new Date();
+                            clearInterval(timer2)
+                            console.log('我是设置时间时候开启的定时器')
+                            if (alterTime0.getTime() <= nowTime.getTime()) {
+                                alert(`${h3.innerHTML} 提醒时间到了！`)
+                                //关闭定时器
+                                clearTimeout(timer1)
+                                showTime.innerHTML = '提醒时间'
+                                hourSpan.innerHTML = ''
+                                minSpan.innerHTML = ''
+                                arr[id].time = '提醒时间'
+                                localStorage.setItem('arr', JSON.stringify(arr))
+                            }
+                        }, 1000)
+                    } else {
+                        //设置提醒时间错误提示
+                        const a = setTimeout(() => {
+                            clearInterval(timer1)
+                            alert(`${h3.innerHTML} 提醒时间设置错误！`)
+                            showTime.innerHTML = '提醒时间'
+                            hourSpan.innerHTML = ''
+                            minSpan.innerHTML = ''
+                            arr[id].time = '提醒时间'
+                            localStorage.setItem('arr', JSON.stringify(arr))
+                        }, 100)
+                    }
+                }
+                function setTime2() {
+                    if (alterTime0.getTime() >= now.getTime()) {//如果设置的时间大于当前时间，则开始计时
+                        timer2 = setInterval(() => {
+                            const nowTime = new Date();
+                            console.log('我是刷新页面时候开启的定时器')
+                            clearInterval(timer1)
+                            if (alterTime0.getTime() <= nowTime.getTime()) {
+                                alert(`${h3.innerHTML} 提提醒时间到了！`)
+                                //关闭定时器
+                                clearTimeout(timer2)
+                                showTime.innerHTML = '提醒时间'
+                                hourSpan.innerHTML = ''
+                                minSpan.innerHTML = ''
+                                arr[id].time = '提醒时间'
+                                localStorage.setItem('arr', JSON.stringify(arr))
+                            }
+                        }, 1000)
+                    }
+                    else {
+                        //设置提醒时间错误提示
+                        const a = setTimeout(() => {
+                            clearInterval(timer2)
+                            alert(`${h3.innerHTML} 提醒时间设置错误！请重新设置`)
+                            showTime.innerHTML = '提醒时间'
+                            hourSpan.innerHTML = ''
+                            minSpan.innerHTML = ''
+                            arr[id].time = '提醒时间'
+                            localStorage.setItem('arr', JSON.stringify(arr))
+                        }, 100)
+                    }
+                }
+
+                //如果已经设置过时间，就开启定时器，定时器到时间就提醒
+                //将那个时间，转换为日期格式，获取现在的日期，如果设置的时间大于当前时间，则提醒时间到
+                //如果没有设置过时间，就先设置时间，再开启定时器来提醒
+                //将设置的时间转换为日期格式，获取现在的日期，如果设置的时间小雨当前时间，则提示设置错误，否则开启定时器
+                if (showTime.innerHTML != '提醒时间') {//设置过时间
+                    console.log(showTime.innerHTML)
+                    setTime()
+                    setTime2()
+                }
+
+                //删除设置的时间
+                const deleteSetTime = time.parentNode.querySelector('.deleteSetTime')
+                deleteSetTime.addEventListener('click', function (e) {
+                    e.preventDefault()
+                    showTime.innerHTML = '提醒时间'
+                    hourSpan.innerHTML = ''
+                    minSpan.innerHTML = ''
+                    arr[id].time = '提醒时间'
+                    localStorage.setItem('arr', JSON.stringify(arr))
+                    clearInterval(timer1)
+                    clearInterval(timer2)
+                })
+
+            })
+        }
+
+        //二、四象限
+        function four() {
+            // 获取arr，将arr根据impt分成四个部分，分别添加到四个数组中
+            const array = JSON.parse(localStorage.getItem('arr'))
+            const f1 = []
+            const f2 = []
+            const f3 = []
+            const f4 = []
+            array.forEach((a, index) => {
+                if (a.impt == '重要紧急') {
+                    f2.push(a)
+                } else if (a.impt == '重要不紧急') {
+                    f1.push(a)
+                } else if (a.impt == '不重要不紧急') {
+                    f4.push(a)
+                } else if (a.impt == '不重要紧急') {
+                    f3.push(a)
+                }
+            })
+            fourModel()
+            function fourModel() {
+                // 渲染四象限
+                const f1Temp = f1.map((item, index) => {
+                    return `
+                <li>${index + 1}、    ${item.thingName}</li>
+                `
+                })
+                const f2Temp = f2.map((item, index) => {
+                    return `
+                <li>${index + 1}、    ${item.thingName}</li>
+                `
+                })
+                const f3Temp = f3.map((item, index) => {
+                    return `
+                <li>${index + 1}、    ${item.thingName}</li>
+                `
+                })
+                const f4Temp = f4.map((item, index) => {
+                    return `
+                <li>${index + 1}、    ${item.thingName}</li>
+                `
+                })
+                const f1Box = document.querySelector('.f1 ul')
+                const f2Box = document.querySelector('.f2 ul')
+                const f3Box = document.querySelector('.f3 ul')
+                const f4Box = document.querySelector('.f4 ul')
+                f1Box.innerHTML = f1Temp.join('')
+                f2Box.innerHTML = f2Temp.join('')
+                f3Box.innerHTML = f3Temp.join('')
+                f4Box.innerHTML = f4Temp.join('')
+            }
+        }
+        //三、番茄钟
+        tomatoClock()
+        function tomatoClock() {
+            // 获取这个元素的对象 用于改变里面的数值
+            const border = document.querySelector('.border')
+            // 获取两个开始和暂停的按钮
+            const stopbtn = document.querySelector('.stop')
+            const startbtn = document.querySelector('.start')
+            const endbtn = document.querySelector('.end')
+            const continuebtn = document.querySelector('.continue')
+            //获取分钟和秒的元素
+            const toHour = document.querySelector('.to_hour')
+            const toMin = document.querySelector('.to_min')
+
+            const hiddenHour = document.querySelector('.hiddenHour')
+            const selectHour = hiddenHour.querySelector('.selectHour')
+
+            const toHM = document.querySelector('.toHM')
+            toHM.addEventListener('click', function () {
+                if (hiddenHour.style.display === 'none') {
+                    hiddenHour.style.display = 'block'
+                } else if (hiddenHour.style.display === 'block') {
+                    hiddenHour.style.display = 'none'
+                }
+                if (startbtn.style.display === 'none') {
+                    console.log('倒计时开始不能设置时间')
+                    hiddenHour.style.display = 'none'
+                    // alert('开始计时后不能设置时间！！！')
+                    const re = confirm('开始计时后不能设置时间！！！')
+                    console.log(re)
+
+                }
+            })
+            document.addEventListener('click', function (e) {
+                if (e.target !== toHM && e.target !== selectHour && hiddenHour.style.display !== 'none') {
+                    hiddenHour.style.display = 'none';
+                }
+            });
+            function info() {
+                const k0 = selectHour.value
+                if (k0 < 10) {
+                    toHour.innerHTML = `0${k0}`
+                } else {
+                    toHour.innerHTML = `${k0}`
+                }
+                return k0
+            }
+            selectHour.addEventListener('change', function () {
+                info()
+            })
+            //先让暂停和继续按钮禁用
+            stopbtn.disabled = true;
+            continuebtn.disabled = true;
+            // 模拟分秒的数值
+            let i = 60
+            let k = info()
+            // 模拟倒计时
+            function startfunction() {
+                if (k === toHour.innerHTML) {
+                    k--
+                }
+                i--
+                // 将boder中的数字换成i
+                if (i < 10) {
+                    if (k < 10) {
+                        toHour.innerHTML = `0${k}`
+                        toMin.innerHTML = `0${i}`
+                    } else {
+                        toHour.innerHTML = `${k}`
+                        toMin.innerHTML = `0${i}`
+                    }
+
+                } else {
+                    if (k < 10) {
+                        toHour.innerHTML = `0${k}`
+                        toMin.innerHTML = `${i}`
+                    } else {
+                        toHour.innerHTML = `${k}`
+                        toMin.innerHTML = `${i}`
+                    }
+                }
+                if (i === 0 && k != 0) {
+                    i = 60
+                    k--
+                }
+                if (i === 0 && k === 0) {
+                    toHour.innerHTML = `0${k}`
+                    toMin.innerHTML = `0${i}`
+                    //停止定时器
+                    clearInterval(start)
+                    startbtn.style.display = `block`
+                    endbtn.style.display = `none`
+                    //初始化暂停结束按钮的禁用状态
+                    stopbtn.disabled = true;
+                    continuebtn.disabled = true;
+                    console.log('定时器关闭')
+                    //显示提示
+                    alert(`倒计时${info()}分钟时间到！`)
+                }
+                if (k < 0 || i < 0) {
+                    k = 0
+                    i = 0
+                    toHour.innerHTML = `0${k}`
+                    toMin.innerHTML = `0${i}`
+                }
+            }
+            let start
+            //开始专注按钮一旦被点击，就显示‘专注中。。。’ ，停止专注则内容为空
+            const attentionText = document.querySelector('.attentionText')
+            startbtn.addEventListener('click', function () {
+                //判断分钟是否为0，如果为0，则提示设置时间
+                if (toHour.innerHTML === '00' && toMin.innerHTML === '00') {
+                    alert('请设置时间！')
+                    return
+                }
+                //一旦被点击，就让专注中。。。显示出来,当点击停止专注的时候让它隐藏
+                attentionText.innerHTML = '专注中......'
+
+                //初始化分秒
+                i = 60
+                k = toHour.innerHTML
+                // 开启定时器
+                start = setInterval(startfunction, 1000)
+                // 开启以后不能再开定时器了，否则就会出现好几个定时器同时作用，加快计时
+                // 开启以后将开始计时的按钮变成一个结束计时的按钮
+                startbtn.style.display = `none`
+                endbtn.style.display = `block`
+                // 解除暂停按钮禁用
+                stopbtn.disabled = false;
+                continuebtn.disabled = false;
+
+            })
+            //暂停按钮
+            stopbtn.addEventListener('click', function () {
+                //记录i k
+                clearInterval(start)
+                stopbtn.style.display = `none`
+                continuebtn.style.display = `block`
+
+                //停止时，显示暂停中.....
+                attentionText.innerHTML = '暂停中......'
+            })
+            //继续按钮
+            continuebtn.addEventListener('click', function () {
+                start = setInterval(startfunction, 1000)
+                stopbtn.style.display = `block`
+                continuebtn.style.display = `none`
+                //继续则显示专注中。。。
+                attentionText.innerHTML = '专注中......'
+            })
+            endbtn.addEventListener('click', function () {
+                clearInterval(start)
+                //将分秒清零
+                k = 0
+                i = 0
+                // 初始化分秒
+                toHour.innerHTML = `0${k}`
+                toMin.innerHTML = `0${i}`
+                selectHour.value = 0
+                // border.innerHTML = `00:00`
+                // 初始化开始结束按钮显示隐藏状态
+                startbtn.style.display = `block`
+                endbtn.style.display = `none`
+                //初始化暂停结束按钮的禁用状态
+                stopbtn.disabled = true;
+                continuebtn.disabled = true;
+                //初始化暂停结束按钮的显示状态
+                stopbtn.style.display = `block`
+                continuebtn.style.display = `none`
+
+                //关闭专注的时候则为空
+                attentionText.innerHTML = ''
+
+            })
+        }
+    </script>
+</body>
+
+</html>
+<!-- 
+✅bug1:右键点击li时，点击几次就会删除几个li
+✅bug2:只要一添加新的计划，设置提醒时间就不管用了，必须刷新页面才行
+✅bug3:没有防爆，添加一个限制字数的功能，不能让事项的名称超出一定的范围
+✅bug4:点击li的空白地方才能出发侧边框，不能点击li的文本
+✅添加功能：点击复选框，将已完成的添加到未完成的下面
+✅用arr数组存贮提醒时间，以及重要程度，当重要程度改变的时候，数组里面的也会改变，然后渲染到页面上
+✅添加一个删除设置时间的按钮
+✅bug：当改变事项的重要程度的时候，数组里面的重要程度也会改变，但是四象限里也要改变
+优化：
+1、番茄钟需要优化
+2、添加功能：专注时间记录，可以记录今日专注的积累时间，然后有一个清零的按钮
+✅ 3、添加功能：当开始专注的时候，显示专注中。。。。。
+-->
