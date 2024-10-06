@@ -1184,7 +1184,7 @@
         //二、四象限
         function four() {
             // 获取arr，将arr根据impt分成四个部分，分别添加到四个数组中
-            const array = JSON.parse(localStorage.getItem('arr'))
+            const array = JSON.parse(localStorage.getItem('arr')) || []
             const f1 = []
             const f2 = []
             const f3 = []
