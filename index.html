@@ -688,7 +688,7 @@
             //每次渲染的时候，box1的宽度变成1000px
             const listBox = document.querySelector('.listBox')
             listBox.style.width = '1000px'
-            arr = JSON.parse(localStorage.getItem('arr'))
+            arr = JSON.parse(localStorage.getItem('arr')) || []
             function myReturn(item, thingName, time, impt, isChecked, index) {
                 return `
                 <li class="li${index}">
